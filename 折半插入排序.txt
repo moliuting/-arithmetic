@@ -1,0 +1,32 @@
+public static void BInsertionSort(int[] arr)
+{
+    int outer, inner;
+
+    //outer loop
+    for (outer = 1; outer < arr.Length; outer++)
+    {
+        
+        //current sort value
+        int temp = arr[outer];
+        int low = 0, high = outer;
+
+        //compute current positon ready for insert
+        while (low <= high)
+        {
+            var mid = (low + high) / 2;
+            if (temp > arr[mid])
+                low = mid + 1;
+            else high = mid - 1;
+        }
+        //11,5
+        //low high
+        //move range right
+        for (int j = outer - 1; j > high; j--)
+        {
+            arr[j + 1] = arr[j];
+        }
+        //set current position value
+        arr[high + 1] = temp;
+        
+    }
+}

@@ -1,0 +1,43 @@
+void CInsertionSort::Path2Insertion(void)
+{
+    //元素0是哨兵。
+    const int count = 9, length = count -1;
+    int L[count] = {0, 49, 38, 65, 97, 76, 13, 27, 49};
+    //对顺序表L作2-路插入排序。
+    int d[length] = { 0 };
+    d[0] = L[1];//L中D的第一个记录为d中排好序的记录。
+    int first = 0, final = 0;//first、final分别指示d中排好序的记录的第1个和最后1个记录的位置。
+    for (int i = 2; i <= length; ++i)//依次将L的第2个～最后一个记录插入d中。
+    {
+        if (L[i] < d[first])//待插入记录小于d中最小值，插入到d[first]之前（不需移动d数组的元素）。
+        {
+            first = (first - 1 + length) % length;
+            d[first] = L[i];
+        }
+        else if (L[i] > d[final])//待插入记录大于d中最小值，插入到d[final]之后（不需移动d数组的元素）。
+        {
+            final = final + 1;
+            d[final] = L[i];
+        }
+        else//待插入记录大于d中最小值，小于d中最大值，插入到d的中间（需要移动d数组的元素）。
+        {
+            int j = final ++;//移动d尾部元素以便按序插入记录。
+            while (L[i] < d[j])
+            {
+                d[(j + 1) % length] = d[j];
+                j = (j - 1 + length) % length;
+            }
+            d[j + 1] = L[i];
+        }
+    }
+    for (int i = 1; i <= length; i ++)//循环把d赋给L。
+    {
+        L[i] = d[(i + first - 1) % length];//线性关系。
+    }
+    //打印排序结果。
+    for (int i = 0; i <= length; ++ i)
+    {
+        cout << L[i] << "\t";
+    }
+    cout << endl;
+}

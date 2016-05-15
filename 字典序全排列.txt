@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Algorithms
+{
+    class Permutation
+    {
+        private static int MAXLENGTH = 20;
+
+        private static int length;
+        private static char[] words = new char[MAXLENGTH];
+
+        private static void Swap(int indexX, int indexY)
+        {
+            if (indexX != indexY)
+            {
+                char ch = words[indexX];
+                words[indexX] = words[indexY];
+                words[indexY] = ch;
+            }
+        }
+
+        private static void InvertArray(int fromIndex, int endIndex)
+        {
+            for (; fromIndex < endIndex; ++fromIndex, --endIndex)
+                Swap(fromIndex, endIndex);
+        }
+
+        private static void Sort(int fromIndex, int endIndex)
+        {
+            Array.Sort(words, fromIndex, endIndex - fromIndex + 1);
+        }
+
+        private static void Output()
+        {
+            for (int index = 0; index < length; ++index)
+                Console.Write(words[index] + " ");
+            Console.WriteLine();
+        }
+
+        private static void PermutationList()
+        {
+            int fromIndex, endIndex, changeIndex;
+            Sort(0, length - 1);
+            do
+            {
+                // 输出一种全排列
+                Output();
+                fromIndex = endIndex = length - 1;
+                // 向前查找第一个变小的元素
+                while (fromIndex > 0 && words[fromIndex] < words[fromIndex - 1]) --fromIndex;
+                changeIndex = fromIndex;
+                if (fromIndex == 0) break;
+                // 向后查找最后一个大于words[fromIndex-1]的元素
+                while (changeIndex + 1 < length && words[changeIndex + 1] > words[fromIndex - 1]) ++changeIndex;
+                Swap(fromIndex - 1, changeIndex);   // 交换两个值
+                InvertArray(fromIndex, endIndex);   // 对后面的所有值进行反向处理
+            } while (true);
+        }
+
+        /// <summary>
+        /// 递归方式生成全排列的方法
+        /// </summary>
+        /// <param name="fromIndex">全排列的起始位置</param>
+        /// <param name="endIndex">全排列的终止位置</param>
+        private static void PermutationList(int fromIndex, int endIndex)
+        {
+            if (fromIndex == endIndex)
+                Output();
+            else
+            {
+                for (int index = fromIndex; index <= endIndex; ++index)
+                {
+                    // 此处排序主要是为了生成字典序全排列，否则递归会打乱字典序
+                    Sort(fromIndex, endIndex);
+                    Swap(fromIndex, index);
+                    PermutationList(fromIndex + 1, endIndex);
+                    Swap(fromIndex, index);
+                }
+            }
+        }
+
+        public static void PermutationTest()
+        {
+            Console.Write("please input the permutation words:");
+            words = Console.ReadLine().ToCharArray();
+            length = words.Count();
+            PermutationList();
+            Console.ReadLine();
+        }
+    }
+}

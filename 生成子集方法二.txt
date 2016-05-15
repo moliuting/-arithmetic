@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+bool b[20]={0};//判断当前每一个节点选中状态
+/*递归输出n以内所有的子集,其中b表示该节点是否选中，cur为当前下标,初始值0*/
+void print_subset(int n,bool* b,int cur){
+	//当cur加到n的时候输出该串节点(解答树)的值
+	if(cur==n){
+		for (int i=0;i<n;i++){
+			if(b[i])
+				cout<<i<<' ';
+		}
+		cout<<endl;
+		return ;
+	}
+	b[cur]=true;//该节点设为选中状态
+	print_subset(n,b,cur+1);//cur+1递归该状态时的下一层节点,循环该操作
+	b[cur]=false;//该节点设为不选中状态
+	print_subset(n,b,cur+1);//cur+1递归该状态时的下一层节点,循环该操作
+}
+
+int main(){
+	int n ;
+	while (cin>>n,n){
+		print_subset(n,b,0);
+	}
+}
