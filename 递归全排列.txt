@@ -1,0 +1,29 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+const int MAX = 10;
+int a[10];
+void comb(int m, int k)
+{
+    int i, j;
+    for (i = m; i >= k; --i)
+    {
+        a[k] = i;                    //每个组合的第一个数可以是m,m-1.....k
+        if (k > 1)
+            comb(i - 1, k - 1);        //k>1继续递归
+        else
+        {
+            for (j = a[0]; j > 0; --j)
+                printf("%d", a[j]);
+            printf("\n");
+        }
+    }
+}
+int main()
+{
+    int m, k;
+    cin >> m >> k;
+    a[0] = k;                //a[0]用来表示k 
+    comb(m, k);
+    return 0;
+}
