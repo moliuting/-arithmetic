@@ -1,0 +1,25 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+void insertSort(int array[], int size)
+{
+    for(int i = 1; i < size; ++i)
+    {
+        int tmp = array[i];
+        int j;
+        for(j = i; j > 0 && array[j-1] > array[j]; --j)
+            array[j] = array[j-1];
+        array[j] = tmp;
+    }
+}
+
+int main(int argc, char **argv)
+{
+    int a[] = {1, 3, 5, 7, 8};
+    size_t size = sizeof(a) / sizeof(int);
+    insertSort(a, size);
+    for(int i = 0; i < size; ++i)
+        cout << a[i] << " ";
+    cout << endl;
+}
