@@ -1,0 +1,66 @@
+inline int SJTNext(unsigned int* index, size_t array_size, int* move)
+{
+    unsigned int i, j, t;
+
+    //找到最大合法移动的元素索引
+    for(i = array_size - 1, j = array_size; i != UINT_MAX; --i)
+    {
+        if(i + move[i] < array_size && index[i] > index[i + move[i]])
+        {
+            if(j == array_size)
+            {
+                j = i;
+                continue;
+            }
+
+            if(index[i] > index[j])
+            {
+                j = i;
+            }
+        }
+    }
+
+    //未发现合法的移动策略
+    if(j == array_size)
+    {
+        return 1;
+    }
+
+    t = index[j];//要交换位置的元素
+    i = j + move[j];//发生交换的位置
+    swap(index, i, j);
+    swap(move, i, j);
+
+    //将所有比t大的元素的移动方向反转
+    for(i = 0; i < array_size; ++i)
+    {
+        if(index[i] > t)
+        {
+            move[i] = -move[i];
+        }
+    }
+
+    return 0;
+}
+
+/*
+ * 基于最小变换的Steinhaus–Johnson–Trotter算法
+ */
+void FullArray(char* array, size_t array_size)
+{
+    unsigned int index[array_size];
+    int move[array_size];
+
+    for(unsigned int i = 0; i < array_size; ++i)
+    {
+        index[i] = i;
+        move[i] = -1;
+    }
+
+    ArrayPrint(array, array_size, index);
+
+    while(!SJTNext(index, array_size, move))
+    {
+        ArrayPrint(array, array_size, index);
+    }
+}
